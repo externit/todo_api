@@ -4,11 +4,11 @@ import { baseValidation, BaseModel } from './base.model';
 export type Todo = BaseModel & {
   title: string;
   status: string;
-  email?: string;
+  email: string;
 };
 
 export const todoValidation = baseValidation.keys({
-  title: Joi.string(),
-  email: Joi.string(),
+  title: Joi.string().required(),
+  email: Joi.string().required(),
   status: Joi.string().valid('active', 'done'),
 });

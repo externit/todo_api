@@ -13,7 +13,12 @@ export default class TodoController {
     try {
       const payload: any = req.payload;
       const { title, email } = payload;
-      const todo: Todo = { email, title, status: 'active', creactedAt: new Date() };
+      const todo: Todo = {
+        email,
+        title,
+        status: 'active',
+        creactedAt: new Date(),
+      };
 
       const result = await req.mongo.db.collection('todos').insertOne(todo);
 
@@ -25,14 +30,17 @@ export default class TodoController {
 
   public getTodos = async (req: ReqMongo, h: ResponseToolkit) => {
     try {
-      const payload: any = req.payload;
-      console.log(payload);
+      const id = req.params.id;
+      const ObjectID = req.mongo.ObjectID;
+
+      const user = await req.mongo.db
+        .collection('users')
+        .findOne({ _id: ObjectID(id) });
 
       const todos = await req.mongo.db
         .collection('todos')
-        .find({ email: payload.email })
+        .find({ email: user.email })
         .toArray();
-      console.log(todos);
 
       return todos;
     } catch (e) {
@@ -47,7 +55,7 @@ export default class TodoController {
       const payload: any = req.payload;
       const { title, status, email } = payload;
 
-      const todo: Todo = { title, status, modifiedAt: new Date() };
+      const todo: Todo = { email, title, status, modifiedAt: new Date() };
 
       const result = await req.mongo.db
         .collection('todos')

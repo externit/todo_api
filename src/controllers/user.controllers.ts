@@ -29,8 +29,7 @@ export default class UserController {
 
       const result = req.mongo.db.collection('users').insertOne(user);
       return result;
-    } catch (e) {
-      console.log(e);
+    } catch (e: any) {
       return e.output.payload;
     }
   };
@@ -38,14 +37,10 @@ export default class UserController {
   public validateUser = async (req: ReqMongo, res: ResponseToolkit) => {
     try {
       const payload: any = req.payload;
-      console.log(payload);
-      
       const user = await req.mongo.db
         .collection('users')
         .findOne({ email: payload.email });
 
-      console.log(user);
-      
       if (!user) {
         throw unauthorized('User not found');
       }
@@ -56,9 +51,8 @@ export default class UserController {
       if (!isCorrectPassword) {
         throw unauthorized('Wrong password');
       }
-      return { email: user.email };
-    } catch (e) {
-      console.log(e);
+      return { id: user._id };
+    } catch (e: any) {
       return e.output.payload;
     }
   };

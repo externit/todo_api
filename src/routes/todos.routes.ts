@@ -33,8 +33,8 @@ export const TodoRoutes = [
   },
 
   {
-    method: 'POST',
-    path: '/todos',
+    method: 'GET',
+    path: '/todos/{id}',
     handler: todo.getTodos,
   },
 ];
