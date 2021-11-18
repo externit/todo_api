@@ -51,7 +51,7 @@ export default class UserController {
       if (!isCorrectPassword) {
         throw unauthorized('Wrong password');
       }
-      return { id: user._id };
+      return { id: user._id, email: user.email };
     } catch (e: any) {
       return e.output.payload;
     }
